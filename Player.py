@@ -1,29 +1,33 @@
 class Player:
-    def __init__(self, name, starting_location=(0, 0), max_inventory_slots=5, max_health=100):
+    def __init__(self, name, starting_room):
         self.name = name
-        self.location = starting_location
+        self.current_room = starting_room
         self.inventory = []
-        self.max_inventory_slots = max_inventory_slots
-        self.health = max_health
+        self.max_inventory_slots = 5
+        self.health = 3
 
     def display_status(self):
         print(f"{self.name}'s Status:")
-        print(f"Location: {self.location}")
+        print(f"Current Room: {self.current_room.name}")
+        print(f"Description: {self.current_room.description}")
         print(f"Health: {self.health}")
         print(f"Inventory: {self.inventory}")
 
     def move(self, direction):
-        x, y = self.location
-        if direction.lower() == 'up':
-            self.location = (x, y + 1)
-        elif direction.lower() == 'down':
-            self.location = (x, y - 1)
-        elif direction.lower() == 'left':
-            self.location = (x - 1, y)
-        elif direction.lower() == 'right':
-            self.location = (x + 1, y)
+        if direction.lower() == 'north' and self.current_room.north:
+            self.current_room = self.current_room.north
+            print(f"{self.name} moved to the north.")
+        elif direction.lower() == 'south' and self.current_room.south:
+            self.current_room = self.current_room.south
+            print(f"{self.name} moved to the south.")
+        elif direction.lower() == 'east' and self.current_room.east:
+            self.current_room = self.current_room.east
+            print(f"{self.name} moved to the east.")
+        elif direction.lower() == 'west' and self.current_room.west:
+            self.current_room = self.current_room.west
+            print(f"{self.name} moved to the west.")
         else:
-            print("Invalid direction. Use 'up', 'down', 'left', or 'right'.")
+            print(f"There is no path to the {direction}.")
 
     def pick_up_item(self, item):
         if len(self.inventory) < self.max_inventory_slots:
