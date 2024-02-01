@@ -24,7 +24,7 @@ def prompt_user(player):
     
 
 def main():
-    STARTROOM.describe()
     player.location = STARTROOM
+    STARTROOM.describe()
     while True:
         promptUser()
