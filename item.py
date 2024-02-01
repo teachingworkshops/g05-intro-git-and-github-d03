@@ -7,3 +7,6 @@ class Item:
     self.discovery = discovery
     #text displayed when item is inspected in inventory
     self.description = description
+
+  def discover(self):
+    print(self.discovery)
