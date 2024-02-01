@@ -54,6 +54,10 @@ room_up = Room(None,start_room,None,None,None,None,deadend,True)
 room_right = Room(None,None,None,start_room,key,None,deadend,False)
 room_down =  Room(start_room,None,None,None,None,goblin,deadend,False)
 
+start_room.north = room_up
+start_room.south = room_down
+start_room.east = room_right
+start_room.west = room_left
 #Major oversight in the method of constructing the map and rooms referencing other rooms, python does not have a compiler
 #rl1 = Room(None,None,None,start_room,None,potion,east_south_turn,False)
 #rl2 = Room(None,None,None,None,goblin,None,north_south_west,False)
