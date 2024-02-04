@@ -1,6 +1,3 @@
-from room import Room
-
-
 class Player:
     def __init__(self, starting_room):
         self.location = starting_room
