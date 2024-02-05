@@ -9,6 +9,12 @@ class Room:
         self.description = description
         self.isDoor = isDoor
 
+    def set_references(self, north, east, south, west):
+        self.north = north
+        self.east = east
+        self.south = south
+        self.west = west
+
     def describe(self):
         print(self.description)
 
