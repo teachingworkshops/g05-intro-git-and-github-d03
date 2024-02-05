@@ -54,10 +54,10 @@ minotaur = Enemy("Minotaur", minotaur_desc, minotaur_hit, minotaur_defeat)
 
 start_room = Room(None, None, None, None, None, None, start_desc, False)
 
-room_left = Room(None, None, None, start_room, sword, None, deadend, False)
+room_left = Room(None, None, None, start_room, None, sword, deadend, False)
 room_up = Room(None, start_room, None, None, None, None, deadend, True)
-room_right = Room(None, None, None, start_room, key, None, deadend, False)
-room_down = Room(start_room, None, None, None, None, goblin, deadend, False)
+room_right = Room(None, None, None, start_room, None, key, deadend, False)
+room_down = Room(start_room, None, None, None, goblin, None, deadend, False)
 
 start_room.north = room_up
 start_room.south = room_down
