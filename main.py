@@ -8,11 +8,16 @@ start_desc = "Damp stone brick walls surround you. Light enters from the gaping 
 hall_desc = "Ahead is straight corridor with doorways only to the north and south."
 deadend = "You find yourself in an empty dead-end room. Better turn around..."
 
+north_south_hall = "The stone walls continue seemingly endlessly from north to south..."
+east_west_hall = "The stone walls continue seemingly endlessly from east to west..."
+east_north_turn = "The stone walls curve at a right angle, a doorway to the north and to the east."
 east_north_turn = "The stone walls curve at a right angle, a doorway to the north and to the east."
 east_south_turn = "The stone walls curve at a right angle, a doorway to the south and to the east."
 west_north_turn = "The stone walls curve at a right angle, a doorway to the north and to the west."
-north_south_west = "The path splits off into 3 directions, to the north south or west."
-north_south_east = "The path splits off into 3 directions, to the north south or east."
+north_south_west = "The path splits off into 3 directions, to the north, south and west."
+north_south_east = "The path splits off into 3 directions, to the north, south and east."
+north_east_west = "The path splits off into 3 directions, to the north, east and west."
+north_east_south_west = "The room has doorways going in all directions."
 
 null_direction = "You can't go that way, just a wall."
 
@@ -54,10 +59,37 @@ minotaur = Enemy("Minotaur", minotaur_desc, minotaur_hit, minotaur_defeat)
 
 start_room = Room(None, None, None, None, None, None, start_desc, False)
 
-room_left = Room(None, None, None, start_room, None, sword, deadend, False)
-room_up = Room(None, start_room, None, None, None, None, deadend, True)
-room_right = Room(None, None, None, start_room, None, key, deadend, False)
-room_down = Room(start_room, None, None, None, goblin, None, deadend, False)
+room_left = Room(None, None, start_room, None, None, sword, east_west_hall, False)
+room_up = Room(None, start_room, None, None, None, None, north_south_hall, False)
+room_right = Room(None, None, None, start_room, None, None, deadend, False)
+room_down = Room(start_room, None, None, None, minotaur, None, deadend, False)
+
+room_left_corner = Room(None, None, room_left, None, None, None, east_north_turn, False)
+room_left_north_corridor = Room(None, room_left_corner, None, None, None, None, north_south_hall, False)
+room_shield = Room(None, room_left_north_corridor, None, None, None, shield, deadend, False)
+
+room_north_corridor = Room(None, start_room, None, None, None, None, north_south_hall, False)
+room_further_north_corridor = Room(None, room_north_corridor, None, None, None, None, north_south_hall, False)
+room_north_east_west = Room(None, room_further_north_corridor, None, None, goblin, None, north_east_south_west, False)
+room_northest = Room(None, room_north_east_west, None, None, None, None, deadend, False)
+room_westest = Room(None, None, room_north_east_west, None, None, None, deadend, False)
+room_eastest = Room(None, None, None, room_north_east_west, None, key, deadend, False)
+
+room_door = Room(room_down, None, None, None, goblin, None, deadend, True)
+
+room_left_corner.set_references(room_left_north_corridor, room_left, None, None)
+room_left_north_corridor.set_references(room_shield, None, room_left_corner, None)
+
+room_up.set_references(room_north_corridor, None, start_room, None)
+room_north_corridor.set_references(room_further_north_corridor, None, room_up, None)
+room_further_north_corridor.set_references(room_north_east_west, None, room_north_corridor, None)
+room_north_east_west.set_references(room_northest, room_eastest, room_further_north_corridor, room_westest)
+
+room_down.set_references(start_room, None, room_door, None)
+
+room_left.set_references(None, start_room, None, room_left_corner)
+
+
 
 start_room.north = room_up
 start_room.south = room_down
