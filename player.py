@@ -9,7 +9,6 @@ class Player:
         self.hasShield = False
 
     def display_status(self):
-        print(f"Description: {self.location.description}")
         print(f"Health: {self.health}")
         print(f"Inventory: {self.inventory_disp}")
 

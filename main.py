@@ -127,6 +127,7 @@ south: move to the room to the south if one exists
 west: move to the room to the west if one exists
 describe room: describe the room you are currently in
 describe item: describe any item that may exist in the room
+status: describe current health and inventory
 help: display this message
 """)
         case _:
@@ -144,15 +145,19 @@ def main():
             player.location.enemy = None
 
         if player.location.item != None:
-            player.location.item.discover()
-            player.inventory.append(player.location.item)
-            player.inventory_disp.append(player.location.item.name)
-            match player.location.item.name:
-                case "Key":
-                    player.hasKey = True
-                case "Sword":
-                    player.hasSword = True
-            player.location.item = None
+            playerPickedItUp = player.location.item.discover()
+            if playerPickedItUp:
+                player.inventory.append(player.location.item)
+                player.inventory_disp.append(player.location.item.name)
+                match player.location.item.name:
+                    case "Key":
+                        player.hasKey = True
+                    case "Sword":
+                        player.hasSword = True
+                print(f"You picked up the {player.location.item.name}!")
+                player.location.item = None
+            else:
+                print(f"You didn't pick up the {player.location.item.name}.")
 
 if __name__ == "__main__":
     main()
