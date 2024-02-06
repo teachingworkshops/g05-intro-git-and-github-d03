@@ -106,7 +106,7 @@ player = Player(start_room)
 
 def prompt_user(player):
     user_input = input("What will you do?\n")
-    match user_input:
+    match user_input.strip(" ").lower():
         case "north":
             player.move("north")
         case "east":
@@ -120,11 +120,17 @@ def prompt_user(player):
         case "status":
             player.display_status()
         case "help":
-            print(
-                "You may perform the following actions:\nnorth: move to the room to the north if one exists\neast: move to the room to the east if one exists\nsouth: move to the room to the south if one exists\nwest: move to the room to the west if one exists\ndescribe room: describe the room you are currently in\ndescribe item: describe any item that may exist in the room\nhelp: display this message\n"
-            )
+            print( """You may perform the following actions:
+north: move to the room to the north if one exists
+east: move to the room to the east if one exists
+south: move to the room to the south if one exists
+west: move to the room to the west if one exists
+describe room: describe the room you are currently in
+describe item: describe any item that may exist in the room
+help: display this message
+""")
         case _:
-            print("Invalid action. Try again.")
+            print("Invalid action. Try again or type 'help'")
             prompt_user(player)
 
 
