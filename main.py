@@ -106,6 +106,7 @@ player = Player(start_room)
 
 def prompt_user(player):
     user_input = input("What will you do?\n")
+    print() # new line to make viewing output easier
     match user_input.strip(" ").lower():
         case "north":
             player.move("north")
@@ -119,6 +120,8 @@ def prompt_user(player):
             player.location.describe()
         case "status":
             player.display_status()
+        case "quit":
+            print("A hero never quits!!!")
         case "help":
             print( """You may perform the following actions:
 north: move to the room to the north if one exists
@@ -128,8 +131,8 @@ west: move to the room to the west if one exists
 describe room: describe the room you are currently in
 describe item: describe any item that may exist in the room
 status: describe current health and inventory
-help: display this message
-""")
+quit: exits the game without victory
+help: display this message """)
         case _:
             print("Invalid action. Try again or type 'help'")
             prompt_user(player)

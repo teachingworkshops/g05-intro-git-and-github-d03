@@ -10,6 +10,7 @@ class Item:
     def discover(self):
         print(self.discovery)
         choice = input(f"Do you want to pick up the {self.name}? (Y/n)\n")
+        print()  # make viewing output easier
         choice = choice.strip(" ").lower()
 
         if len(choice) == 0:  # default
