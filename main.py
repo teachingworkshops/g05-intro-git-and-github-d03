@@ -4,7 +4,7 @@ from item import Item
 from Player import Player
 from room import Room
 
-start_desc = "Damp stone brick walls surround you. Light enters from the gaping hole in the ceiling from which you first fell in. There are doorways splitting to the east, west and south. There must be another way out..."
+start_desc = "Damp stone brick walls surround you. Light enters from the gaping hole in the ceiling from which you first fell in. There are doorways splitting to the north, east, west and south. There must be another way out..."
 hall_desc = "Ahead is straight corridor with doorways only to the north and south."
 deadend = "You find yourself in an empty dead-end room. Better turn around..."
 
@@ -62,7 +62,7 @@ start_room = Room(None, None, None, None, None, None, start_desc, False)
 room_left = Room(None, None, start_room, None, None, sword, east_west_hall, False)
 room_up = Room(None, start_room, None, None, None, None, north_south_hall, False)
 room_right = Room(None, None, None, start_room, None, None, deadend, False)
-room_down = Room(start_room, None, None, None, minotaur, None, deadend, False)
+room_down = Room(start_room, None, None, None, minotaur, None, north_south_hall, False)
 
 room_left_corner = Room(None, None, room_left, None, None, None, east_north_turn, False)
 room_left_north_corridor = Room(None, room_left_corner, None, None, None, None, north_south_hall, False)
