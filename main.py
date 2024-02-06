@@ -1,7 +1,7 @@
 # Room Descriptions
 from enemy import Enemy
 from item import Item
-from Player import Player
+from player import Player
 from room import Room
 
 start_desc = "Damp stone brick walls surround you. Light enters from the gaping hole in the ceiling from which you first fell in. There are doorways splitting to the north, east, west and south. There must be another way out..."
@@ -77,17 +77,17 @@ room_eastest = Room(None, None, None, room_north_east_west, None, key, deadend, 
 
 room_door = Room(room_down, None, None, None, goblin, None, deadend, True)
 
-room_left_corner.set_references(room_left_north_corridor, room_left, None, None)
-room_left_north_corridor.set_references(room_shield, None, room_left_corner, None)
+room_left_corner.set_nearby_rooms(room_left_north_corridor, room_left, None, None)
+room_left_north_corridor.set_nearby_rooms(room_shield, None, room_left_corner, None)
 
-room_up.set_references(room_north_corridor, None, start_room, None)
-room_north_corridor.set_references(room_further_north_corridor, None, room_up, None)
-room_further_north_corridor.set_references(room_north_east_west, None, room_north_corridor, None)
-room_north_east_west.set_references(room_northest, room_eastest, room_further_north_corridor, room_westest)
+room_up.set_nearby_rooms(room_north_corridor, None, start_room, None)
+room_north_corridor.set_nearby_rooms(room_further_north_corridor, None, room_up, None)
+room_further_north_corridor.set_nearby_rooms(room_north_east_west, None, room_north_corridor, None)
+room_north_east_west.set_nearby_rooms(room_northest, room_eastest, room_further_north_corridor, room_westest)
 
-room_down.set_references(start_room, None, room_door, None)
+room_down.set_nearby_rooms(start_room, None, room_door, None)
 
-room_left.set_references(None, start_room, None, room_left_corner)
+room_left.set_nearby_rooms(None, start_room, None, room_left_corner)
 
 
 
