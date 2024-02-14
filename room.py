@@ -1,4 +1,7 @@
 class Room:
+    # dictionary of rooms
+    rooms = {}
+
     def __init__(self, north, south, east, west, enemy, item, description, isDoor):
         self.north = north
         self.east = east

@@ -57,51 +57,51 @@ key = Item("Key", key_desc, discover_key)
 goblin = Enemy("Goblin", goblin_desc, goblin_hit, goblin_defeat)
 minotaur = Enemy("Minotaur", minotaur_desc, minotaur_hit, minotaur_defeat)
 
-start_room = Room(None, None, None, None, None, None, start_desc, False)
+Room.rooms["start_room"] = Room("room_up", "room_down", "room_right", "room_left", None, None, start_desc, False)
+Room.rooms["room_left"] = Room(None, None, "start_room", "room_left_corner", None, sword, east_west_hall, False)
+Room.rooms["room_up"] = Room("room_north_corridor", "start_room", None, None, None, None, north_south_hall, False)
 
-room_left = Room(None, None, start_room, None, None, sword, east_west_hall, False)
-room_up = Room(None, start_room, None, None, None, None, north_south_hall, False)
-room_right = Room(None, None, None, start_room, None, None, deadend, False)
-room_down = Room(start_room, None, None, None, minotaur, None, north_south_hall, False)
+Room.rooms["room_right"] = Room(None, None, None, "start_room", None, None, deadend, False)
+Room.rooms["room_down"] = Room("start_room", "room_door", None, None, minotaur, None, north_south_hall, False)
 
-room_left_corner = Room(None, None, room_left, None, None, None, east_north_turn, False)
-room_left_north_corridor = Room(None, room_left_corner, None, None, None, None, north_south_hall, False)
-room_shield = Room(None, room_left_north_corridor, None, None, None, shield, deadend, False)
+Room.rooms["room_left_corner"] = Room("room_left_north_corridor", None, "room_left", None, None, None, east_north_turn, False)
+Room.rooms["room_left_north_corridor"] = Room("room_shield", "room_left_corner", None, None, None, None, north_south_hall, False)
+Room.rooms["room_shield"] = Room(None, "room_left_north_corridor", None, None, None, shield, deadend, False)
 
-room_north_corridor = Room(None, start_room, None, None, None, None, north_south_hall, False)
-room_further_north_corridor = Room(None, room_north_corridor, None, None, None, None, north_south_hall, False)
-room_north_east_west = Room(None, room_further_north_corridor, None, None, goblin, None, north_east_south_west, False)
-room_northest = Room(None, room_north_east_west, None, None, None, None, deadend, False)
-room_westest = Room(None, None, room_north_east_west, None, None, None, deadend, False)
-room_eastest = Room(None, None, None, room_north_east_west, None, key, deadend, False)
+Room.rooms["room_north_corridor"] = Room("room_further_north_corridor", "room_up", None, None, None, None, north_south_hall, False)
+Room.rooms["room_further_north_corridor"] = Room("room_north_east_west", "room_north_corridor", None, None, None, None, north_south_hall, False)
+Room.rooms["room_north_east_west"] = Room("room_northest", "room_further_north_corridor", "room_eastest", "room_westest", goblin, None, north_east_south_west, False)
+Room.rooms["room_northest"] = Room(None, "room_north_east_west", None, None, None, None, deadend, False)
+Room.rooms["room_westest"] = Room(None, None, "room_north_east_west", None, None, None, deadend, False)
+Room.rooms["room_eastest"] = Room(None, None, None, "room_north_east_west", None, key, deadend, False)
 
-room_door = Room(room_down, None, None, None, goblin, None, deadend, True)
+Room.rooms["room_door"] = Room("room_down", None, None, None, goblin, None, deadend, True)
 
-room_left_corner.set_references(room_left_north_corridor, room_left, None, None)
-room_left_north_corridor.set_references(room_shield, None, room_left_corner, None)
+#room_left_corner.set_references(room_left_north_corridor, room_left, None, None)
+#room_left_north_corridor.set_references(room_shield, None, room_left_corner, None)
 
-room_up.set_references(room_north_corridor, None, start_room, None)
-room_north_corridor.set_references(room_further_north_corridor, None, room_up, None)
-room_further_north_corridor.set_references(room_north_east_west, None, room_north_corridor, None)
-room_north_east_west.set_references(room_northest, room_eastest, room_further_north_corridor, room_westest)
+#room_up.set_references(room_north_corridor, None, start_room, None)
+#room_north_corridor.set_references(room_further_north_corridor, None, room_up, None)
+#room_further_north_corridor.set_references(room_north_east_west, None, room_north_corridor, None)
+#room_north_east_west.set_references(room_northest, room_eastest, room_further_north_corridor, room_westest)
 
-room_down.set_references(start_room, None, room_door, None)
+#room_down.set_references(start_room, None, room_door, None)
 
-room_left.set_references(None, start_room, None, room_left_corner)
+#room_left.set_references(None, start_room, None, room_left_corner)
 
-
-
+"""
 start_room.north = room_up
 start_room.south = room_down
 start_room.east = room_right
 start_room.west = room_left
+"""
 # Major oversight in the method of constructing the map and rooms referencing other rooms, python does not have a compiler
 # rl1 = Room(None,None,None,start_room,None,potion,east_south_turn,False)
 # rl2 = Room(None,None,None,None,goblin,None,north_south_west,False)
 # rl3 = Room(None,None,None,None,None,None,deadend,False)
 
 
-player = Player(start_room)
+player = Player("start_room")
 
 
 def prompt_user(player):
@@ -116,7 +116,7 @@ def prompt_user(player):
         case "west":
             player.move("west")
         case "describe room":
-            player.location.describe()
+            Room.rooms[player.location].describe()
         case "status":
             player.display_status()
         case "help":
@@ -129,7 +129,7 @@ def prompt_user(player):
 
 
 def main():
-    player.location.describe()
+    Room.rooms[player.location].describe()
     while True:
         prompt_user(player)
 
