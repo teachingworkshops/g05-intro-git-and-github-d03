@@ -1,52 +1,51 @@
 # Room Descriptions
+import json
 from enemy import Enemy
 from item import Item
-from Player import Player
+from player import Player
 from room import Room
 
-start_desc = "Damp stone brick walls surround you. Light enters from the gaping hole in the ceiling from which you first fell in. There are doorways splitting to the north, east, west and south. There must be another way out..."
-hall_desc = "Ahead is straight corridor with doorways only to the north and south."
-deadend = "You find yourself in an empty dead-end room. Better turn around..."
+f = open('descriptions.json')
+d = json.load(f) # d is descriptions
 
-north_south_hall = "The stone walls continue seemingly endlessly from north to south..."
-east_west_hall = "The stone walls continue seemingly endlessly from east to west..."
-east_north_turn = "The stone walls curve at a right angle, a doorway to the north and to the east."
-east_north_turn = "The stone walls curve at a right angle, a doorway to the north and to the east."
-east_south_turn = "The stone walls curve at a right angle, a doorway to the south and to the east."
-west_north_turn = "The stone walls curve at a right angle, a doorway to the north and to the west."
-north_south_west = "The path splits off into 3 directions, to the north, south and west."
-north_south_east = "The path splits off into 3 directions, to the north, south and east."
-north_east_west = "The path splits off into 3 directions, to the north, east and west."
-north_east_south_west = "The room has doorways going in all directions."
+sword = Item("Longsword", d["sword_desc"], d["discover_sword"])
+shield = Item("Shield", d["shield_desc"], d["discover_shield"])
+potion = Item("Potion", d["potion_desc"], d["discover_potion"])
+torch = Item("Torch", d["torch_desc"], d["discover_torch"])
+key = Item("Key", d["key_desc"], d["discover_key"])
 
-null_direction = "You can't go that way, just a wall."
+goblin = Enemy("Goblin", d["goblin_desc"], d["goblin_hit"], d["goblin_defeat"])
+minotaur = Enemy("Minotaur", d["minotaur_desc"], d["minotaur_hit"], d["minotaur_defeat"])
 
-# Item Descriptions
-key_desc = "A tarnished brass skeleton key, no doubt it's for opening a door somewhere..."
-discover_key = "A tiny yellow shimmer catches your eye on the floor. You find a brass key and put in it your pocket."
+start_room = Room(None, None, None, None, None, None, d["start_desc"], False)
 
-discover_sword = "A rotten goblin lay slain on the ground with a long sword sticking out from its chest. You remove the blade and carry it with you."
-sword_desc = "A shimmering steel sword with a golden hilt, it feels heavy in your hands. Must have belonged to some other adventurer. "
+room_left = Room(None, None, start_room, None, None, sword, d["east_west_hall"], False)
+room_up = Room(None, start_room, None, None, None, None, d["north_south_hall"], False)
+room_right = Room(None, None, None, start_room, None, None, d["deadend"], False)
+room_down = Room(start_room, None, None, None, minotaur, None, d["north_south_hall"], False)
 
-discover_shield = "You see a charred human skeleton laying in a pile of soot, a silver shield covering its chest. You pick up the shield in your offhand to take with you, maybe it will serve you beter."
-shield_desc = "A shiny silver kite shield strapped to your arm. Don't let those monsters get too close..."
+room_left_corner = Room(None, None, room_left, None, None, None, d["east_north_turn"], False)
+room_left_north_corridor = Room(None, room_left_corner, None, None, None, None, d["north_south_hall"], False)
+room_shield = Room(None, room_left_north_corridor, None, None, None, shield, d["deadend"], False)
 
-discover_potion = "In a small wooden box you find a vial of red liquid. Just sniffing the concoction makes you buzz with energy. You collect the potion as it may come in handy."
-potion_desc = "A rose-red potion of what you can only assume gives you more vitality."
+room_north_corridor = Room(None, start_room, None, None, None, None, d["north_south_hall"], False)
+room_further_north_corridor = Room(None, room_north_corridor, None, None, None, None, d["north_south_hall"], False)
+room_north_east_west = Room(None, room_further_north_corridor, None, None, goblin, None, d["north_east_south_west"], False)
+room_northest = Room(None, room_north_east_west, None, None, None, None, d["deadend"], False)
+room_westest = Room(None, None, room_north_east_west, None, None, None, d["deadend"], False)
+room_eastest = Room(None, None, None, room_north_east_west, None, key, d["deadend"], False)
 
-discover_torch = "Mounted on the wall is a lit torch illuminating the room. You pick it up off the wall in case you need to explore any dark depths ahead."
-torch_desc = "A seemingly normal lit wooden torch, besides the fact that no matter what you do nothing seems to extinguish the flames. Strange..."
+room_door = Room(room_down, None, None, None, goblin, None, d["deadend"], True)
 
-# Enemy Descriptions
-goblin_desc = "A hunched green creature with pointed ears and a rusty dagger ambushes you! Classic Goblin tactics."
-goblin_hit = "The goblin swings its dagger at you and makes contact, spilling your blood on the dungeon floor."
-goblin_defeat = "You fell the lowly goblin with your attacks, putting it out of its misery."
+room_left_corner.set_nearby_rooms(room_left_north_corridor, room_left, None, None)
+room_left_north_corridor.set_nearby_rooms(room_shield, None, room_left_corner, None)
 
-minotaur_desc = "A tall, half man half bull creature holding a hulking axe blocks your path. The Minotaur lets out a bellow and rushes towards you."
-minotaur_hit = "You are unable to avoid the Minotaur's swing, giving you a large gash from the axe blade."
-minotaur_defeat = "The Minotaur bellows once more and falls to the ground after you deliver a mighty final blow to the beast."
+room_up.set_nearby_rooms(room_north_corridor, None, start_room, None)
+room_north_corridor.set_nearby_rooms(room_further_north_corridor, None, room_up, None)
+room_further_north_corridor.set_nearby_rooms(room_north_east_west, None, room_north_corridor, None)
+room_north_east_west.set_nearby_rooms(room_northest, room_eastest, room_further_north_corridor, room_westest)
 
-defeat_msg = "You fall to the ground, bleeding out from your injuries. You simply cannot go on... GAME OVER!"
+room_down.set_nearby_rooms(start_room, None, room_door, None)
 
 sword = Item("Longsword", sword_desc, discover_sword)
 shield = Item("Shield", shield_desc, discover_shield)
@@ -77,19 +76,6 @@ Room.rooms["room_eastest"] = Room(None, None, None, "room_north_east_west", None
 
 Room.rooms["room_door"] = Room("room_down", None, None, None, goblin, None, deadend, True)
 
-#room_left_corner.set_references(room_left_north_corridor, room_left, None, None)
-#room_left_north_corridor.set_references(room_shield, None, room_left_corner, None)
-
-#room_up.set_references(room_north_corridor, None, start_room, None)
-#room_north_corridor.set_references(room_further_north_corridor, None, room_up, None)
-#room_further_north_corridor.set_references(room_north_east_west, None, room_north_corridor, None)
-#room_north_east_west.set_references(room_northest, room_eastest, room_further_north_corridor, room_westest)
-
-#room_down.set_references(start_room, None, room_door, None)
-
-#room_left.set_references(None, start_room, None, room_left_corner)
-
-"""
 start_room.north = room_up
 start_room.south = room_down
 start_room.east = room_right
@@ -104,7 +90,8 @@ player = Player(Room.rooms["start_room"])
 
 def prompt_user(player):
     user_input = input("What will you do?\n")
-    match user_input:
+    print() # new line to make viewing output easier
+    match user_input.strip(" ").lower():
         case "north":
             player.move("north")
         case "east":
@@ -117,12 +104,21 @@ def prompt_user(player):
             Room.rooms[player.location].describe()
         case "status":
             player.display_status()
+        case "quit":
+            print("A hero never quits!!!")
         case "help":
-            print(
-                "You may perform the following actions:\nnorth: move to the room to the north if one exists\neast: move to the room to the east if one exists\nsouth: move to the room to the south if one exists\nwest: move to the room to the west if one exists\ndescribe room: describe the room you are currently in\ndescribe item: describe any item that may exist in the room\nhelp: display this message\n"
-            )
+            print( """You may perform the following actions:
+north: move to the room to the north if one exists
+east: move to the room to the east if one exists
+south: move to the room to the south if one exists
+west: move to the room to the west if one exists
+describe room: describe the room you are currently in
+describe item: describe any item that may exist in the room
+status: describe current health and inventory
+quit: exits the game without victory
+help: display this message """)
         case _:
-            print("Invalid action. Try again.")
+            print("Invalid action. Try again or type 'help'")
             prompt_user(player)
 
 
@@ -136,15 +132,19 @@ def main():
             player.location.enemy = None
 
         if player.location.item != None:
-            player.location.item.discover()
-            player.inventory.append(player.location.item)
-            player.inventory_disp.append(player.location.item.name)
-            match player.location.item.name:
-                case "Key":
-                    player.hasKey = True
-                case "Sword":
-                    player.hasSword = True
-            player.location.item = None
+            playerPickedItUp = player.location.item.discover()
+            if playerPickedItUp:
+                player.inventory.append(player.location.item)
+                player.inventory_disp.append(player.location.item.name)
+                match player.location.item.name:
+                    case "Key":
+                        player.hasKey = True
+                    case "Sword":
+                        player.hasSword = True
+                print(f"You picked up the {player.location.item.name}!")
+                player.location.item = None
+            else:
+                print(f"You didn't pick up the {player.location.item.name}.")
 
 if __name__ == "__main__":
     main()
