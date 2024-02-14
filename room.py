@@ -9,7 +9,7 @@ class Room:
         self.description = description
         self.isDoor = isDoor
 
-    def set_references(self, north, east, south, west):
+    def set_nearby_rooms(self, north, east, south, west):
         self.north = north
         self.east = east
         self.south = south
@@ -18,7 +18,7 @@ class Room:
     def describe(self):
         print(self.description)
 
-    def roomCheck(self, player):
+    def room_check(self, player):
         if player.location.isDoor:
             if player.hasKey:
                 print("You use the key on the door and escape the dungeon!")
