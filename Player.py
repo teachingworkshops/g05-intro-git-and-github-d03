@@ -16,20 +16,20 @@ class Player:
         print(f"Inventory: {self.inventory_disp}")
 
     def move(self, direction):
-        if direction.lower() == "north" and Room.rooms[self.location.north]:
-            self.location = Room.rooms[self.location].north
+        if direction.lower() == "north" and self.location.north:
+            self.location = Room.rooms[self.location.north]
             print("You move to the north.")
             self.location.roomCheck(self)
-        elif direction.lower() == "south" and Room.rooms[self.location.south]:
-            self.location = Room.rooms[self.location].south
+        elif direction.lower() == "south" and self.location.south:
+            self.location = Room.rooms[self.location.south]
             print("You move to the south.")
             self.location.roomCheck(self)
-        elif direction.lower() == "east" and Room.rooms[self.location.east]:
-            self.location = Room.rooms[self.location].east
+        elif direction.lower() == "east" and self.location.east:
+            self.location = Room.rooms[self.location.east]
             print("You move to the east.")
             self.location.roomCheck(self)
-        elif direction.lower() == "west" and Room.rooms[self.location.west]:
-            self.location = Room.rooms[self.location].west
+        elif direction.lower() == "west" and self.location.west:
+            self.location = Room.rooms[self.location.west]
             print("You move to the west.")
             self.location.roomCheck(self)
         else:

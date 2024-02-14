@@ -100,9 +100,7 @@ start_room.west = room_left
 # rl2 = Room(None,None,None,None,goblin,None,north_south_west,False)
 # rl3 = Room(None,None,None,None,None,None,deadend,False)
 
-
-player = Player("start_room")
-
+player = Player(Room.rooms["start_room"])
 
 def prompt_user(player):
     user_input = input("What will you do?\n")
@@ -129,7 +127,7 @@ def prompt_user(player):
 
 
 def main():
-    Room.rooms[player.location].describe()
+    player.location.describe()
     while True:
         prompt_user(player)
 
