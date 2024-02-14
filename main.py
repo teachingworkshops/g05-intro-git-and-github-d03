@@ -47,34 +47,34 @@ room_north_east_west.set_nearby_rooms(room_northest, room_eastest, room_further_
 
 room_down.set_nearby_rooms(start_room, None, room_door, None)
 
-sword = Item("Longsword", sword_desc, discover_sword)
-shield = Item("Shield", shield_desc, discover_shield)
-potion = Item("Potion", potion_desc, discover_potion)
-torch = Item("Torch", torch_desc, discover_torch)
-key = Item("Key", key_desc, discover_key)
+sword = Item("Longsword", d["sword_desc"], d["discover_sword"])
+shield = Item("Shield", d["shield_desc"], d["discover_shield"])
+potion = Item("Potion", d["potion_desc"], d["discover_potion"])
+torch = Item("Torch", d["torch_desc"], d["discover_torch"])
+key = Item("Key", d["key_desc"], d["discover_key"])
 
-goblin = Enemy("Goblin", goblin_desc, goblin_hit, goblin_defeat)
-minotaur = Enemy("Minotaur", minotaur_desc, minotaur_hit, minotaur_defeat)
+goblin = Enemy("Goblin", d["goblin_desc"], d["goblin_hit"], d["goblin_defeat"])
+minotaur = Enemy("Minotaur", d["minotaur_desc"], d["minotaur_hit"], d["minotaur_defeat"])
 
-Room.rooms["start_room"] = Room("room_up", "room_down", "room_right", "room_left", None, None, start_desc, False)
-Room.rooms["room_left"] = Room(None, None, "start_room", "room_left_corner", None, sword, east_west_hall, False)
-Room.rooms["room_up"] = Room("room_north_corridor", "start_room", None, None, None, None, north_south_hall, False)
+Room.rooms["start_room"] = Room("room_up", "room_down", "room_right", "room_left", None, None, d["start_desc"], False)
+Room.rooms["room_left"] = Room(None, None, "start_room", "room_left_corner", None, sword, d["east_west_hall"], False)
+Room.rooms["room_up"] = Room("room_north_corridor", "start_room", None, None, None, None, d["north_south_hall"], False)
 
-Room.rooms["room_right"] = Room(None, None, None, "start_room", None, None, deadend, False)
-Room.rooms["room_down"] = Room("start_room", "room_door", None, None, minotaur, None, north_south_hall, False)
+Room.rooms["room_right"] = Room(None, None, None, "start_room", None, None, d["deadend"], False)
+Room.rooms["room_down"] = Room("start_room", "room_door", None, None, minotaur, None, d["north_south_hall"], False)
 
-Room.rooms["room_left_corner"] = Room("room_left_north_corridor", None, "room_left", None, None, None, east_north_turn, False)
-Room.rooms["room_left_north_corridor"] = Room("room_shield", "room_left_corner", None, None, None, None, north_south_hall, False)
-Room.rooms["room_shield"] = Room(None, "room_left_north_corridor", None, None, None, shield, deadend, False)
+Room.rooms["room_left_corner"] = Room("room_left_north_corridor", None, "room_left", None, None, None, d["east_north_turn"], False)
+Room.rooms["room_left_north_corridor"] = Room("room_shield", "room_left_corner", None, None, None, None, d["north_south_hall"], False)
+Room.rooms["room_shield"] = Room(None, "room_left_north_corridor", None, None, None, shield, d["deadend"], False)
 
-Room.rooms["room_north_corridor"] = Room("room_further_north_corridor", "room_up", None, None, None, None, north_south_hall, False)
-Room.rooms["room_further_north_corridor"] = Room("room_north_east_west", "room_north_corridor", None, None, None, None, north_south_hall, False)
-Room.rooms["room_north_east_west"] = Room("room_northest", "room_further_north_corridor", "room_eastest", "room_westest", goblin, None, north_east_south_west, False)
-Room.rooms["room_northest"] = Room(None, "room_north_east_west", None, None, None, None, deadend, False)
-Room.rooms["room_westest"] = Room(None, None, "room_north_east_west", None, None, None, deadend, False)
-Room.rooms["room_eastest"] = Room(None, None, None, "room_north_east_west", None, key, deadend, False)
+Room.rooms["room_north_corridor"] = Room("room_further_north_corridor", "room_up", None, None, None, None, d["north_south_hall"], False)
+Room.rooms["room_further_north_corridor"] = Room("room_north_east_west", "room_north_corridor", None, None, None, None, d["north_south_hall"], False)
+Room.rooms["room_north_east_west"] = Room("room_northest", "room_further_north_corridor", "room_eastest", "room_westest", goblin, None, d["north_east_south_west"], False)
+Room.rooms["room_northest"] = Room(None, "room_north_east_west", None, None, None, None, d["deadend"], False)
+Room.rooms["room_westest"] = Room(None, None, "room_north_east_west", None, None, None, d["deadend"], False)
+Room.rooms["room_eastest"] = Room(None, None, None, "room_north_east_west", None, key, d["deadend"], False)
 
-Room.rooms["room_door"] = Room("room_down", None, None, None, goblin, None, deadend, True)
+Room.rooms["room_door"] = Room("room_down", None, None, None, goblin, None, d["deadend"], True)
 
 start_room.north = room_up
 start_room.south = room_down
@@ -85,6 +85,7 @@ start_room.west = room_left
 # rl1 = Room(None,None,None,start_room,None,potion,east_south_turn,False)
 # rl2 = Room(None,None,None,None,goblin,None,north_south_west,False)
 # rl3 = Room(None,None,None,None,None,None,deadend,False)
+"""
 
 player = Player(Room.rooms["start_room"])
 
